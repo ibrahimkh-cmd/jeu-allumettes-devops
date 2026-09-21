@@ -21,4 +21,4 @@ COPY --from=builder /build/out/ ./
 
 ENTRYPOINT ["java", "allumettes.Jouer"]
 
-CMD ["Ibrahim@humain", "Ordinateur@naif"]
+CMD ["Ibrahim @humain", "Ordinateur@naif"]
