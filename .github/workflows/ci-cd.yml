@@ -1,0 +1,52 @@
+name: CI/CD Pipeline - Build and Push Docker Image
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'app/**'
+      - '.github/workflows/ci-cd.yml'
+  workflow_dispatch: # Permet de déclencher le pipeline manuellement
+
+jobs:
+  build-and-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Récupération du code source
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configuration de l'environnement Java (validation CI)
+      - name: Set up JDK 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+      # 3. Compilation de vérification du code Java
+      - name: Verify Java compilation
+        run: |
+          mkdir -p bin
+          javac -d bin $(find app/src -name "*.java" ! -name "Test*")
+
+      # 4. Configuration de Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 5. Connexion à Docker Hub via les secrets
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_ikl0934 }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 6. Build et Push de l'image conteneurisée
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./app
+          file: ./app/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_ikl0934 }}/jeu_allumettes:latest
