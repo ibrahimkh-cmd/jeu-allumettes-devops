@@ -1,0 +1,22 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Clés privées et secrets (critique pour la sécurité)
+*.pem
+dove_key
+dove_key.pub
+id_*
+
+# Ansible
+ansible/inventory.yaml
+ansible/.retry
+
+# Java / IDE
+bin/
+out/
+*.class
+.idea/
+.vscode/

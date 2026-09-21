@@ -1,0 +1,33 @@
+---
+- name: Configuration de l'environnement Docker
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Mettre a jour le cache APT
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Installer Docker
+      ansible.builtin.apt:
+        name:
+          - docker.io
+        state: present
+
+    - name: Demarrer et activer le service Docker
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Ajouter l'utilisateur ubuntu au groupe docker
+      ansible.builtin.user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Telecharger l'image du jeu depuis Docker Hub
+      ansible.builtin.command:
+        cmd: docker pull ikl0934/jeu_allumettes:latest
+      become: yes
