@@ -91,7 +91,7 @@ public class Jouer {
 				+ "\n\t\t" + "strategie = naif | rapide | expert | humain | tricheur"
 				+ "\n"
 				+ "\n\t" + "Exemple :"
-				+ "\n\t" + "	java allumettes.Jouer Xavier@humain "
+				+ "\n\t" + "	java allumettes.Jouer Ibrahim@humain "
 					   + "Ordinateur@naif"
 				+ "\n"
 				);
