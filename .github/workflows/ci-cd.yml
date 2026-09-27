@@ -81,7 +81,7 @@ jobs:
           timeout 60 docker run --rm ${{ env.IMAGE }}:${{ github.sha }} ordi1@rapide ordi2@expert
 
       - name: Scan vulnérabilités (Trivy)
-        uses: aquasecurity/trivy-action@0.36.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ env.IMAGE }}:${{ github.sha }}
           severity: CRITICAL,HIGH
