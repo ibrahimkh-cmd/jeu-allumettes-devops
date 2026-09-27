@@ -1,24 +1,25 @@
 # ------------------------------------------------------------
-# Étape 1 : Build (JDK complet pour compiler le code Java)
+# Étape 1 : Build + tests (Maven)
 # ------------------------------------------------------------
-FROM eclipse-temurin:23-jdk-alpine AS builder
-
+FROM maven:3.9-eclipse-temurin-21-alpine AS build
 WORKDIR /build
 
-COPY src/ ./src/
+# Dépendances d'abord : couche mise en cache tant que pom.xml ne change pas
+COPY pom.xml .
+RUN mvn -B -q dependency:go-offline
 
-# Compilation du code applicatif uniquement (sans les tests JUnit)
-RUN mkdir -p out && javac -d out $(find src -name "*.java" ! -name "Test*")
+# Code source, puis compilation + tests JUnit (le build échoue si un test échoue)
+COPY src ./src
+RUN mvn -B package
 
 # ------------------------------------------------------------
-# Étape 2 : Runtime (JRE minimale, pas d'outils de compilation)
+# Étape 2 : Runtime minimal (JRE seule, utilisateur non-root)
 # ------------------------------------------------------------
-FROM eclipse-temurin:23-jre-alpine
-
+FROM eclipse-temurin:21-jre-alpine
+RUN addgroup -S app && adduser -S app -G app
 WORKDIR /app
+COPY --from=build /build/target/jeu-allumettes.jar app.jar
+USER app
 
-COPY --from=builder /build/out/ ./
-
-ENTRYPOINT ["java", "allumettes.Jouer"]
-
+ENTRYPOINT ["java", "-jar", "app.jar"]
 CMD ["Ibrahim@humain", "Ordinateur@naif"]
