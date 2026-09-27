@@ -49,7 +49,7 @@ jeu-allumettes-devops/
 │   ├── src/                  # Code source Java (package allumettes)
 │   └── Dockerfile            # Multi-stage build optimisé (JDK -> JRE)
 ├── k8s/                      # Orchestration de conteneurs Kubernetes
-│   └── pod.yaml              # Manifeste du Pod interactif avec gestion des ressources
+│   └── pod.yml              # Manifeste du Pod interactif avec gestion des ressources
 ├── terraform/                # Infrastructure as Code (AWS)
 │   ├── provider.tf           # Configuration des providers AWS, HTTP et Local
 │   ├── vpc_sg.tf              # Security Group avec restriction IP dynamique
@@ -86,17 +86,17 @@ minikube start --driver=docker
 
 **2. Déploiement déclaratif (manifeste)**
 
-Déployer le Pod avec ses quotas de mémoire et de CPU définis dans `k8s/pod.yaml` :
+Déployer le Pod avec ses quotas de mémoire et de CPU définis dans `k8s/pod.yml` :
 
 ```bash
 # Appliquer le manifeste
-kubectl apply -f k8s/pod.yaml
+kubectl apply -f k8s/pod.yml
 
 # S'attacher à la session interactive du jeu
 kubectl attach jeu-allumettes -c game -i -t
 
 # Nettoyer la ressource une fois la partie terminée
-kubectl delete -f k8s/pod.yaml
+kubectl delete -f k8s/pod.yml
 ```
 
 **3. Exécution avec stratégies personnalisées (à la volée)**
