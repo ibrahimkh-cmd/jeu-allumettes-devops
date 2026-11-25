@@ -14,15 +14,10 @@ public class Jouer {
 	 */
 	public static void main(String[] args) {
 		try {
-			verifierNombreArguments(args);
-
-			int indiceJoueur1 = 0;
-			boolean confiant = false;
 			//savoir si l'arbitre est confiant
-			if (args[0].equals("-confiant")) {
-				confiant = true;
-				indiceJoueur1 = 1;
-			}
+			boolean confiant = args.length > 0 && args[0].equals("-confiant");
+			int indiceJoueur1 = confiant ? 1 : 0;
+			verifierNombreArguments(args.length - indiceJoueur1);
 
 			//creation des joueurs
 			Joueur joueur1 = creerJoueur(args[indiceJoueur1]); 
@@ -76,11 +71,11 @@ public class Jouer {
 		} 
 	} 
 
-	private static void verifierNombreArguments(String[] args) {
+	private static void verifierNombreArguments(int nbJoueurs) {
 		final int Nb_JOUEURS = 2;
-		if (args.length < Nb_JOUEURS || args.length > Nb_JOUEURS + 1 ) {
-			throw new ConfigurationException("Trop peu d'arguments : "
-					+ args.length);
+		if (nbJoueurs != Nb_JOUEURS) {
+			throw new ConfigurationException("Il faut exactement " + Nb_JOUEURS
+					+ " joueurs, reçu : " + nbJoueurs);
 		}
 	}
 	/** Afficher des indications sur la manière d'exécuter cette classe. */

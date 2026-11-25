@@ -86,7 +86,7 @@ jobs:
           image-ref: ${{ env.IMAGE }}:${{ github.sha }}
           severity: CRITICAL,HIGH
           ignore-unfixed: true
-          exit-code: "0"
+          exit-code: "1"
 
       - name: Login Docker Hub
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
