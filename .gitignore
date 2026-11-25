@@ -19,3 +19,7 @@ out/
 *.class
 .idea/
 .vscode/
+target/
+
+# Graphify
+graphify-out/
